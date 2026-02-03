@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Fiesta Online — Комната</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🎭 ФИЕСТА онлайн</h1>
+
+  <h2 id="room"></h2>
+
+  <div class="join-container">
+    <input id="name" placeholder="Ваше имя" />
+    <button id="join">Войти</button>
+  </div>
+
+  <h3>Игроки:</h3>
+  <ul id="players"></ul>
+
+  <button id="start" style="display:none;">Начать игру</button>
+
+  <h3 id="character"></h3>
+
+  <!-- Контейнер для планшетов -->
+  <div id="skulls-container"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="room.js"></script>
+</body>
+</html>

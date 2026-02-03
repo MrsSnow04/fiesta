@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Fiesta Online</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🎭 ФИЕСТА онлайн</h1>
+  <button id="create">Создать игру</button>
+    
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    document.getElementById("create").onclick = () => {
+      socket.emit("create-room");
+    };
+    socket.on("room-created", code => {
+      window.location.href = `/room.html?room=${code}`;
+    });
+  </script>
+</body>
+</html>
