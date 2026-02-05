@@ -143,7 +143,7 @@ socket.on("start-guessing", ({ skulls }) => {
   skulls.forEach(skull => {
     const div = document.createElement("div");
     div.className = "guessing-card";
-    div.innerHTML = `<p>Последнее слово на планшете игрока <b>${skull.ownerName}</b>: "${skull.lastWord}"</p>`;
+    div.innerHTML = `<p>Последнее слово на планшете игрока: "${skull.lastWord}"</p>`;
 
     const select = document.createElement("select");
     skulls.forEach(s => {
@@ -179,7 +179,10 @@ socket.on("start-guessing", ({ skulls }) => {
 socket.on("guess-results", results => {
   // Показываем результаты
   let resultStr = "Результаты угадывания:\n";
-  results.forEach(r => resultStr += `${r.player}: ${r.correct} правильных\n`);
+  results.forEach(r => {
+    resultStr += `${r.player}: ${r.correct} правильных\n`;
+    resultStr += `Слова: ${r.words.join(", ")}\n\n`;
+  });
   alert(resultStr);
 
   // Создаём кнопку "Начать заново"

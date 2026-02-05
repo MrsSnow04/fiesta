@@ -130,6 +130,7 @@ io.on("connection", socket => {
             ownerId: s.ownerId,
             ownerName: s.ownerName,
             lastWord: s.words.at(-1),
+            words: s.words,
             correctCharacter: s.correctCharacter
           }))
         });
@@ -145,11 +146,19 @@ io.on("connection", socket => {
 
     const results = room.players.map(p => {
       let correct = 0;
+
       answers[roomCode][p.id].forEach(a => {
         const skull = skulls[roomCode].find(s => s.ownerId === a.skullOwnerId);
         if (a.guessedCharacter === skull.correctCharacter) correct++;
       });
-      return { player: p.name, correct };
+
+      const playerSkull = skulls[roomCode].find(s => s.ownerId === p.id);
+
+      return {
+        player: p.name,
+        correct,
+        words: playerSkull ? playerSkull.words : []
+      };
     });
 
     io.to(roomCode).emit("guess-results", results);
