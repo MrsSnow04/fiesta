@@ -140,22 +140,34 @@ socket.on("start-guessing", ({ skulls }) => {
 
   const answersInputs = [];
 
-  skulls.forEach(skull => {
+  // 🔀 перемешиваем карточки
+  const shuffledSkulls = shuffle(skulls);
+
+  // список персонажей (один раз)
+  const characters = skulls.map(s => s.correctCharacter);
+
+  shuffledSkulls.forEach(skull => {
     const div = document.createElement("div");
     div.className = "guessing-card";
     div.innerHTML = `<p>Последнее слово на планшете игрока: "${skull.lastWord}"</p>`;
 
     const select = document.createElement("select");
-    skulls.forEach(s => {
+
+    // 🔀 перемешиваем варианты персонажей
+    shuffle(characters).forEach(character => {
       const opt = document.createElement("option");
-      opt.value = s.correctCharacter;
-      opt.innerText = s.correctCharacter;
+      opt.value = character;
+      opt.innerText = character;
       select.appendChild(opt);
     });
 
     div.appendChild(select);
     guessingContainer.appendChild(div);
-    answersInputs.push({ skullOwnerId: skull.ownerId, select });
+
+    answersInputs.push({
+      skullOwnerId: skull.ownerId,
+      select
+    });
   });
 
   const submitBtn = document.createElement("button");
@@ -168,10 +180,12 @@ socket.on("start-guessing", ({ skulls }) => {
       skullOwnerId: a.skullOwnerId,
       guessedCharacter: a.select.value
     }));
+
     socket.emit("submit-answers", { roomCode, playerAnswers });
     guessingContainer.innerHTML = "";
   };
 });
+
 
 // -------------------
 // Отображение результатов и возможность начать заново
