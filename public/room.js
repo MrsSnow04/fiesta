@@ -12,6 +12,10 @@ const charEl = document.getElementById("character");
 // Отображение кода комнаты
 roomEl.innerText = "Комната: " + roomCode;
 
+function shuffle(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
 // Контейнеры для планшетов и угадываний
 const skullsContainer = document.createElement("div");
 skullsContainer.className = "skulls-container";
@@ -137,27 +141,29 @@ socket.on("skull-complete", (skull) => {
 // -------------------
 socket.on("start-guessing", ({ skulls }) => {
   guessingContainer.innerHTML = "<h3>Угадай персонажей!</h3>";
-
+  console.log("SKULLS:", skulls);
+  
   const answersInputs = [];
 
   // 🔀 перемешиваем карточки
   const shuffledSkulls = shuffle(skulls);
 
-  // список персонажей (один раз)
+  // список персонажей
   const characters = skulls.map(s => s.correctCharacter);
 
   shuffledSkulls.forEach(skull => {
     const div = document.createElement("div");
     div.className = "guessing-card";
+
     div.innerHTML = `<p>Последнее слово на планшете игрока: "${skull.lastWord}"</p>`;
 
     const select = document.createElement("select");
 
-    // 🔀 перемешиваем варианты персонажей
-    shuffle(characters).forEach(character => {
+    // 🔀 перемешиваем варианты
+    shuffle(characters).forEach(char => {
       const opt = document.createElement("option");
-      opt.value = character;
-      opt.innerText = character;
+      opt.value = char;
+      opt.innerText = char;
       select.appendChild(opt);
     });
 
