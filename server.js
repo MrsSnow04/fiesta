@@ -76,7 +76,7 @@ io.on("connection", socket => {
       words: [],
       stepsNeeded: room.players.length * cycleCount,
       completed: false,
-      correctCharacter: p.character
+      correctCharacter: p.characterasd
     }));
 
     room.players.forEach((p, i) => {
@@ -85,6 +85,7 @@ io.on("connection", socket => {
 
     answers[roomCode] = {};
   });
+
 
   socket.on("change-character", roomCode => {
     const room = rooms[roomCode];
